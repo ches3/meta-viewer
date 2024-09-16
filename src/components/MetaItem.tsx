@@ -15,6 +15,7 @@ export const MetaItem = ({
 			<div className="flex justify-between gap-2">
 				<Textarea
 					value={value}
+					readOnly
 					className="mt-2 h-fit min-h-[1lh] focus-visible:ring-0 resize-none"
 					onFocus={(e) => {
 						if (!e.currentTarget || e.currentTarget.value === "") {
