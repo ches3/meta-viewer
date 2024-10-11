@@ -1,3 +1,4 @@
+import { getMeta } from "@/lib/getMeta";
 import { MetaItem } from "./MetaItem";
 
 export const Meta = ({ className }: { className?: string }) => {
@@ -12,24 +13,30 @@ export const Meta = ({ className }: { className?: string }) => {
 			if (!tab.id) {
 				return;
 			}
-			chrome.tabs.sendMessage<Message, GetMetaResponse>(
-				tab.id,
-				{ action: "getMeta" },
-				(res) => {
-					if (res.title) {
-						setTitle(res.title);
-					}
-					if (res.description) {
-						setDescription(res.description);
-					}
-					if (res.image) {
-						setImage(res.image);
-					}
-					if (res.favicon) {
-						setFavicon(res.favicon);
-					}
-				},
-			);
+			const id = tab.id;
+
+			(async () => {
+				const result = await chrome.scripting.executeScript({
+					target: { tabId: id },
+					func: getMeta,
+				});
+				if (result.length === 0 || !result[0].result) {
+					return;
+				}
+				const { title, description, image, favicon } = result[0].result;
+				if (title) {
+					setTitle(title);
+				}
+				if (description) {
+					setDescription(description);
+				}
+				if (image) {
+					setImage(image);
+				}
+				if (favicon) {
+					setFavicon(favicon);
+				}
+			})();
 		});
 	}, [setTitle, setDescription, setImage, setFavicon]);
 

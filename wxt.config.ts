@@ -6,7 +6,8 @@ export default defineConfig({
 	srcDir: "src",
 	manifest: {
 		name: "Meta Viewer",
-		version: "1.0.0",
+		version: "1.1.0",
 		description: "View meta information of the current page.",
+		permissions: ["activeTab"],
 	},
 });
