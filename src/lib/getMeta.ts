@@ -39,9 +39,9 @@ export const getMeta = () => {
 	};
 
 	const getFavicon = () => {
-		const favicon = document
-			.querySelector('link[rel="icon"]')
-			?.getAttribute("href");
+		const favicon =
+			document.querySelector('link[rel="icon"]')?.getAttribute("href") ||
+			document.querySelector('link[rel="shortcut icon"]')?.getAttribute("href");
 		if (favicon) {
 			const url = new URL(favicon, `${location.protocol}//${location.host}`);
 			return url.href;
